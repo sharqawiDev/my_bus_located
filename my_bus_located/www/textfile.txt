@@ -1,0 +1,545 @@
+﻿
+//***************** Start Initializion and view of the app *****************
+
+var myApp = new Framework7({});
+var $$ = Dom7;
+var mainView = myApp.addView('.view-main', { dynamicNavbar: true });
+
+    //***************** End Initializion and view of the app *****************
+
+
+    //---------------------------------------start cordova actions----------------------------------------------
+
+(function () {
+    "use strict";
+
+    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+
+    function onDeviceReady() {
+        // Handle the Cordova pause and resume events
+        document.addEventListener( 'pause', onPause.bind( this ), false );
+        document.addEventListener( 'resume', onResume.bind( this ), false );
+        
+        // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
+       
+    };
+
+    function onPause() {
+        // TODO: This application has been suspended. Save application state here.
+    };
+
+    function onResume() {
+        // TODO: This application has been reactivated. Restore application state here.
+    };
+})();
+
+
+
+
+             //---------------------------------------end cordova actions----------------------------------------------
+
+
+
+        //########################################## start data continers of app ##########################################
+
+            var users =
+                [
+                    {
+                        userName: "elshahawy",
+                        passWord: "0",
+                        email: "elshahawy1231@gmail.com",
+                        user_type: "admin"
+
+                    },
+                    {
+                        userName: "teacher",
+                        passWord: "12",
+                        email: "teacher@gmail.com",
+                        user_type: "teacher"
+
+                    },
+                    {
+                        userName: "student",
+                        passWord: "123",
+                        email: "student@gmail.com",
+                        user_type: "student"
+
+                    }
+                ];
+
+
+var allQuizizz = [
+                        [
+                            {
+                                quizDescription: "quiz for pyseics",
+                                quizType:"all_in_on_page"
+
+                            },
+                            {
+                                Q_quiz: "what is your name 1 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '1'
+
+                            },
+                            {
+                                Q_quiz: "what is your name 2 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '2'
+
+                            },
+                            {
+                                Q_quiz: "what is your name 3 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '3'
+
+                            },
+                            {
+                                Q_quiz: "what is your name 4 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '0'
+
+                            },
+                            {
+                                Q_quiz: "what is your name 5 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '0'
+
+                            }
+                        ],
+                        [
+                            {
+                                quizDescription: "quiz for math",
+                                quizType: "one2one"
+
+                            },
+                            {
+                                Q_quiz: "what is your old 1 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '1'
+
+                            },
+                            {
+                                Q_quiz: "what is your old 2 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '2'
+
+                            },
+                            {
+                                Q_quiz: "what is your old 3 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '0'
+
+                            },
+                            {
+                                Q_quiz: "what is your old 4 ?",
+                                answers: "ahmed==mohamed==go==mimo",
+                                correctAnswer: '3'
+
+                            }
+
+                        ]
+
+                 ];
+
+
+ 
+
+var all_in_on_page = function (p) {
+    var value_of_ans;
+    var exam_body =
+          '<div class="popup popup-tablet-fullscreen page pop_quiz"><div class="list-block"><div class="list-group">'
+        + '<ul class="collect_quiz_body"></ul></div></div></div>';
+    myApp.popup(exam_body)    
+    for (var q = 1; q < allQuizizz[p].length;q++){
+        var qOfLoop =
+            '<li style="background:#f00" class = "list-group-title">' + allQuizizz[p][q].Q_quiz + '</li>';
+
+        $$('.collect_quiz_body').append(qOfLoop);
+        var cust_answer_to_array = allQuizizz[p][q].answers.split("==");
+        for (var an = 0; an < cust_answer_to_array.length; an++) {
+            if (an == allQuizizz[p][q].correctAnswer) {
+                value_of_ans = 1;
+            } else {
+                value_of_ans = 0;
+            }
+
+            var ansOfLoop =
+                '<li class="item-content ans_click" value_of_answer=' + value_of_ans + ' ans_of_Q_Index="' + q + '" ><div class="item-inner">'
+                + '<div class="item-title">' + cust_answer_to_array[an] + '</div>'
+                + '</div></li>';
+            $$('.collect_quiz_body').append(ansOfLoop);
+        }
+       
+    }
+                
+}
+var xg = 30;
+var time = xg;
+var running = 0;
+
+
+
+
+var qus_no_for_one2one = 0;
+function next_qus(p) {
+
+    reset();
+    qus_no_for_one2one = qus_no_for_one2one + 1;
+    var qus_one2one =
+        '<li style="background:#f00" class = "list-group-title">' + allQuizizz[p][qus_no_for_one2one].Q_quiz + '</li>';
+    $$('.collect_quiz_body').html(qus_one2one);
+    var cust_answer_one2one_to_array = allQuizizz[p][qus_no_for_one2one].answers.split("==");
+    for (var an = 0; an < cust_answer_one2one_to_array.length; an++) {
+        if (an == allQuizizz[p][qus_no_for_one2one].correctAnswer) {
+            value_of_ans = 1;
+        } else {
+            value_of_ans = 0;
+        }
+        var qust_relly_no = qus_no_for_one2one - 1;
+        var ansOfLoop = 
+            '<li class="item-content ans_click" value_of_answer=' + value_of_ans + ' ans_of_Q_Index="' + qust_relly_no + '" ><div class="item-inner">'
+            + '<div class="item-title">' + cust_answer_one2one_to_array[an] + '</div>'
+            + '</div></li>';
+        $$('.collect_quiz_body').append(ansOfLoop);
+        if (qus_no_for_one2one == allQuizizz[p].length-1) {
+            $$('.pop_quiz button').remove();
+
+        }
+    }
+    function startPause() {
+        'use strict';
+        if (running === 0) {
+            running = 1;
+            decrement();
+
+        }
+    }
+    function reset() {
+        'use strict';
+      
+        time = xg;
+
+
+     
+
+    }
+    function decrement() {
+        'use strict';
+        if (time == 0) {
+            
+            if (qus_no_for_one2one < allQuizizz[p].length-1) {
+                next_qus(p);
+
+            } else {
+                running = 0;
+                qus_no_for_one2one = 0;
+               // popupCloseByOutside: !0;
+               
+            }
+            
+        }
+        if (running === 1) {
+            setTimeout(function () {
+                time--;
+                var mins = Math.floor(time / 10 / 60),
+                    secs = Math.floor(time / 10),
+                    tenths = time % 10;
+
+                if (mins < 10) {
+                    mins = "0" + mins;
+                }
+                if (mins > 60) {
+                    mins = mins - ((Math.floor((mins / 60))) * 60);
+                }
+                if (secs < 10) {
+                    secs = "0" + secs;
+                }
+                if (secs > 60) {
+                    secs = secs - ((Math.floor((secs / 60))) * 60);
+                }
+
+                document.getElementById("output").innerHTML = mins + ":" + secs + ":" + tenths;
+
+
+                decrement();
+            }, 100);
+        }
+    }
+    if (qus_no_for_one2one < allQuizizz[p].length) {
+        startPause();
+
+    } 
+
+    
+}
+
+var one_to_one_qus = function (p) {
+    var value_of_ans;
+    var exam_body =
+        '<div class="popup popup-tablet-fullscreen page pop_quiz"><div class="list-block"><div class="list-group">'
+        + '<ul class="collect_quiz_body"></ul></div></div>  <button onclick="next_qus(' + p +')">next</button><p class="timer" id="output">00:00:00:0</p> </div>';
+    myApp.popup(exam_body);
+    next_qus(p);
+   
+    }
+
+
+
+
+
+
+
+
+
+
+/************************************function to call the quiz by choose the type ****************************/
+
+
+function buildQuizByType(numOfQuiz) {
+    if (allQuizizz[numOfQuiz][0].quizType == "all_in_on_page") {
+        all_in_on_page(numOfQuiz);
+    } else {
+        one_to_one_qus(numOfQuiz);
+    }
+}
+
+
+/**
+ * *************************************
+
+
+ */
+
+function showQuiz() {
+    for (var e = 0; e < allQuizizz.length; e++) {
+        var quizTytle =
+            '<h1  qindx="' + e + '"  >' + allQuizizz[e][0].quizDescription + '</h1>';
+        $$('#collect').append(quizTytle);
+    }
+}
+
+var quizToEnrol = [];
+$$(document).on("click", "h1", function () {
+    var qindex = $$(this).attr('qindx');
+    quizToEnrol.push(qindex);
+    console.log(quizToEnrol);
+});
+
+function RequestQuiz() {
+    for (var j = 0; j < quizToEnrol.length; j++) {
+        var quizIndex = quizToEnrol[j];
+        var quizTytle =
+            '<h2 onclick="buildQuizByType(' + quizIndex + ')">' + allQuizizz[quizIndex][0].quizDescription + '</h2>';
+        if (j == 0) { $$('#collectstu *').remove();}
+       
+        $$('#collectstu').append(quizTytle);
+    }
+}
+
+
+
+
+        //########################################## end data continers of app ##########################################
+
+
+
+
+            var closePopSignUp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //########################################## start functions of sign up ##########################################
+
+
+             //---------------------------------------start build sign up choose ---------------------------------
+
+
+$$(document).on('click', '#signup', function () {
+    var popp_signup = $$('<div class="popup popup-tablet-fullscreen page popup_signup">'
+        + '<a id="signup_teacher" href= "#" ><div class="teacher_choose"><img src="../images/manager.png" /><h2>Teacher</h2></div></a >'
+        + '<a id="signup_student" href= "#" ><div class="student_choose"><img class="img_1" src="../images/avatar.png" />'
+        + '<img class="img_2" src="../images/woman.png" /><h2>Student</h2> </div></a >  </div > ');
+    
+    myApp.popup(popp_signup);
+
+                        //******* close sign up pops********
+   
+    $$(document).on('click', '#goto_signin', function () {
+        myApp.closeModal(popp_signup);
+
+    });
+
+    closePopSignUp = function () {
+        myApp.closeModal(popp_signup);
+    };
+
+});
+            //---------------------------------------end build sign up choose ---------------------------------
+
+            //**************************************start sign up for teacher *********************************
+
+$$(document).on('click', '#signup_teacher', function () {
+    $$('.student_choose , .teacher_choose * ').remove();
+    $$('.teacher_choose').addClass('actve_choose_singup')
+        .css({ 'margin-top': '0' });
+    $$('#signup_teacher').removeAttr('id');
+    var signup_as_teacher =
+        '<div class="login_continer signup_teacher">                                                  '
+        + '<h5>sign up as teacher</h5>                                                                  '
+        + '<span>user name</span> <input id="userName" type="text" />                                   '
+        + '<span>email</span> <input id="email" type="email" />                                         '
+        + '<span>password</span>  <input id="password" type="password" />                               '
+        + '<span>confirm pass</span> <input id="conf_password" type="password" />                       '
+        + '<button style="margin-top: 25px;" id="signup_teacher_supmit">sign up</button>                       '
+        + '<p class="new_user" style="color:#000">Already have an account? <a href="#" id="goto_signin">sign in</a></p>     '
+        + '</div>                                                                                       ';
+
+    $$('.teacher_choose').append(signup_as_teacher);
+    $$('.signup_teacher').animate({ 'opacity': 1 }, { duration: 1500 });
+
+});
+
+
+
+$$(document).on('click', '.signup_teacher #signup_teacher_supmit', function () {
+    var newUser = $$('.signup_teacher #userName').val(),
+        newPass = $$('.signup_teacher #password').val(),
+        confPass = $$('.signup_teacher #conf_password').val(),
+        email = $$('.signup_teacher #email').val(),
+        is_found;
+
+
+    if (newUser == "" || newPass == "" || confPass == "" || email == "") {
+        myApp.alert("plz fill all the fildes", "العامر")
+    } else {
+        for (var i = 0; i < users.length; i++) {
+            if (newUser == users[i].userName || email == users[i].email) {
+                is_found = "found"
+            }
+
+        }
+
+        if (is_found !== "found") {
+            if (newPass == confPass) {
+                users.push({
+                    userName: newUser,
+                    passWord: newPass,
+                    email: email,
+                    user_type: "teacher"
+                });
+               // localStorage.user_arr = JSON.stringify(users);//for save new data to the storage
+                myApp.alert("done ! thx ", "yla neshof");
+               
+                closePopSignUp();
+               // gethomepage();
+              
+               // current_user_name = newUser;
+               // current_user_id = i;
+
+            } else {
+                myApp.alert("the two passwords is not same", "yla neshof");
+            }
+        } else {
+            myApp.alert("sorry user name  alredy found", "yla neshof");
+        }
+
+    }
+
+
+
+
+
+
+});
+
+
+
+
+             //**************************************end sign up for teacher *********************************
+
+             //**************************************start sign up for student *********************************
+$$(document).on('click', '#signup_student', function () {
+    $$('.student_choose * , .teacher_choose ').remove();
+    $$('.student_choose').addClass('actve_choose_singup');
+    $$('#signup_student').removeAttr('id');
+    var signup_as_student =
+        '<div class="login_continer signup_student">                                                    '
+        + '<h5>sign up as student</h5>                                                                  '
+        + '<span>user name</span><input id="userName" type="text" />                                   '
+        + '<span>email</span> <input id="email" type="email" />                                         '
+        + '<span>password</span>  <input id="password" type="password" />                               '
+        + '<span>confirm pass</span> <input id="conf_password" type="password" />                       '
+        + '<button style="margin-top: 25px;" id="signup_student_supmit">sign up</button>                  '
+        + '<p class="new_user" style="color:#000">Already have an account? <a href="#" id="goto_signin">sign in</a></p>     '
+        + '</div>                                                                                       ';
+
+    $$('.student_choose').append(signup_as_student);
+    $$('.signup_student').animate({ 'opacity': 1 }, { duration: 1500 });
+});
+
+
+             //**************************************end sign up for student *********************************
+
+        //########################################## start functions of sign up ##########################################
+
+
+           //************************************** start function of  sign in *********************************
+
+$$(document).on("click", "#loginButton", function () {
+
+    var userName = $$('.login_continer #userName').val(),
+        password = $$('.login_continer #password').val(),
+        user_found = 0;
+
+    //#########just for check ########
+    //console.log(userName + password);
+    if (userName == "" || password == "") {
+        myApp.alert("plz enter your user name and password", "العامر");
+    } else {
+        for (var xx = 0; xx < users.length; xx++) {
+            if (userName == users[xx].user_name && password == users[xx].pass_word) {
+
+                
+                user_found = 1;
+                gethomepage();
+                $$('#userName').val("");
+                $$('#password').val("");
+                current_user_name = userName;
+                current_user_id = xx;
+
+            }
+
+        }
+        if (user_found == 0) {
+            myApp.alert('your user name or password is incorcet', "yla neshof");
+        }
+    }
+
+
+});
+
+
+
+
+           //************************************** end function of  sign in *********************************
